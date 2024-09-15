@@ -29,11 +29,12 @@
     /** Handle an incoming MNES message. */
     MNES.prototype._sb = function(data) {
         // Find the end of the command.
-        var ind = data.search(/[^A-Za-z0-9._]/), pckg, out;
+        var ind = data.search(/[^A-Za-z]/), pckg, out;
         if (ind !== -1) {
             pckg = data.substr(0, ind);
             if (ind + 1 !== data.length) {
-                out = JSON.parse('[' + data.substr(ind + 1) + ']')[0];
+                //out = JSON.parse('[' + data.substr(ind + 1) + ']')[0];
+                console.groupEnd('DecafMUD[' + this.decaf.id + '] mnes ' + pckg);
             }
         } else { 
             pckg = data; 
@@ -81,16 +82,13 @@
     MNES.prototype.commands = {};
 
     /** COMMAND: Core */
-    MNES.prototype.commands.Core = {
+    MNES.prototype.commands.Send = {
         'version': 1,
 
-        'Welcome': function(data) {
-            console.debug('Connected to MNES server with data:', data);
-        },
-
-        'Goodbye': function(data) {
-            this.decaf.debugString('Disconnected from MNES server. Reason: ' + data);
+        'Var': function(data) {
+            console.debug('Got MNES VAR request:', data);
         }
+
     };
 
     // Expose it to DecafMUD
